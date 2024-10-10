@@ -70,12 +70,12 @@ export default function Page() {
             description: 'The query for query result. MUST BE A VALID SQL QUERY. The full query (all lines) should be sent in one go',
             required: true,
         }],
-        renderAndWait: ({ args, handler }) => {
+        followUp: false,
+        render: ({ args }) => {
             const { query } = args;
             const onExecute = async () => {
                 if (!query) return;
                 handleExecuteQuery(query)
-                handler?.('Query is supplied. The request is considered fulfilled. Await further requests from the user.')
             }
             return (
                 <CodeSnippet code={query!} language='SQL' onExecute={onExecute} />
