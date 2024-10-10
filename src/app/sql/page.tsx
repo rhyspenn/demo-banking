@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChevronRight, ChevronLeft, Database } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
-import { CopilotChat, useCopilotChatSuggestions } from "@copilotkit/react-ui";
+import { CopilotChat } from "@copilotkit/react-ui";
 import { CodeSnippet } from "@/components/code-snippet";
 
 const databaseStructure = {
@@ -59,14 +59,6 @@ export default function Page() {
     useCopilotReadable({
         description: "The structure of the database",
         value: databaseStructure
-    });
-
-    useCopilotChatSuggestions({
-        instructions: `
-            Provide suggestions on things to query. For example: "Show all transactions" or "Tell me which Marketing credit cards to I have"
-        `,
-        maxSuggestions: 3,
-        minSuggestions: 3,
     });
 
     useCopilotAction({
