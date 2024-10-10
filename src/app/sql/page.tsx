@@ -67,14 +67,15 @@ export default function Page() {
         parameters: [{
             name: 'query',
             type: 'string',
-            description: 'The query for query result. MUST BE A VALID SQL QUERY',
+            description: 'The query for query result. MUST BE A VALID SQL QUERY. The full query (all lines) should be sent in one go',
             required: true,
         }],
-        render: ({ args }) => {
+        renderAndWait: ({ args, handler }) => {
             const { query } = args;
             const onExecute = async () => {
                 if (!query) return;
-                await handleExecuteQuery(query)
+                handleExecuteQuery(query)
+                handler?.('Query is supplied. The request is considered fulfilled. Await further requests from the user.')
             }
             return (
                 <CodeSnippet code={query!} language='SQL' onExecute={onExecute} />
@@ -95,8 +96,9 @@ export default function Page() {
                             You are an SQL assistant. You are given a database and a question. You need to provide a SQL query that answers the question. You can use the table structure to help you.
                             The table structure is as follows:
                             ${JSON.stringify(databaseStructure)}.
+                            Return the entire query in one go (including all joints etc if require)
                             
-                            You can only help the user by providing SQL queries or answers on SQL queries. You are not allowed to provide any data if you have it
+                            You can only help the user by providing SQL queries or answers on SQL queries. You are not allowed to provide any data if you have it.
                         `}
                         labels={{
                             title: "SQL Assistant",
