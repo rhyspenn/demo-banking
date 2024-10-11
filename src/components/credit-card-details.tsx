@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Ban, Bell, CreditCard, DollarSign, Lock } from "lucide-react";
+import { CreditCard, Lock } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Card as ICard, ExpensePolicy } from '../app/api/v1/data'
@@ -46,18 +46,6 @@ export function CreditCardDetails({
                             <Button variant="ghost" className="w-full justify-start" onClick={onChangePinModalOpen}>
                                 <Lock className="mr-2 h-4 w-4" />
                                 Change PIN
-                            </Button>
-                            <Button variant="ghost" className="w-full justify-start">
-                                <Bell className="mr-2 h-4 w-4" />
-                                Set Alerts
-                            </Button>
-                            <Button variant="ghost" className="w-full justify-start">
-                                <DollarSign className="mr-2 h-4 w-4" />
-                                Adjust Limit
-                            </Button>
-                            <Button variant="ghost" className="w-full justify-start">
-                                <Ban className="mr-2 h-4 w-4" />
-                                Freeze Card
                             </Button>
                         </div>
                     </PopoverContent>

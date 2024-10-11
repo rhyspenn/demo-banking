@@ -10,8 +10,6 @@ export enum Page {
 
 export enum CardsPageOperations {
     ChangePin = 'change-pin',
-    AddCard = 'add-card*UNAVAILABLE*',
-    ChangePolicyForCard = 'change-policy-for-card*UNAVAILABLE*'
 }
 
 export enum TeamPageOperations {
@@ -39,10 +37,11 @@ const CopilotContext = ({ children }: { children: React.ReactNode }) => {
     })
 
     useCopilotReadable({
-        description: 'The available pages and operations',
+        description: 'The available pages and operations, as well as the current page',
         value: {
-            pages: Page,
+            pages: Object.values(Page),
             operations: AVAILABLE_OPERATIONS_PER_PAGE,
+            currentPage: window.location.pathname.split('/').pop() as Page,
         }
     })
 
@@ -57,7 +56,9 @@ const CopilotContext = ({ children }: { children: React.ReactNode }) => {
             Navigate to a page to perform an operation. Use this if you are asked to perform an action outside of page context. For example:
             The user is viewing a dashboard but asks to make changes to a team member or a credit card.
             
-            If the operation name you resolved contains "*UNAVAILABLE*". Tell the user to navigate themselves to the page.
+            If you are on the cards page for example, and are requested to perform a card related operation, you are allowed to perform it.
+            
+            If the operation is unavailable, tell the user to navigate themselves to the page.
             Let them know which page that is.
             Advise them to re-ask co-pilot once they arrive at the right page.
             You can suggest making the navigation part yourself

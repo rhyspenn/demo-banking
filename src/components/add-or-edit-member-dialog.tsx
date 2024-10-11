@@ -6,12 +6,12 @@ import {
     DialogHeader,
     DialogTitle
 } from "@/components/ui/dialog";
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
-import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {ExpenseRole, MemberRole} from "@/app/api/v1/data";
-import {Button} from "@/components/ui/button";
-import {Loader2} from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ExpenseRole, MemberRole } from "@/app/api/v1/data";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export interface DialogState {
     email: string;
@@ -20,6 +20,7 @@ export interface DialogState {
     loading: boolean;
     dialogOpen: boolean;
     memberId: string | null,
+    action: 'add' | 'edit' | 'remove'
 }
 
 export const defaultDialogState = {
@@ -29,21 +30,21 @@ export const defaultDialogState = {
     loading: false,
     dialogOpen: false,
     memberId: null,
+    action: 'add' as DialogState['action'],
 }
 
 export interface MemberDialogProps {
     onStateChange: (payload: Partial<DialogState>) => void;
     onSubmit: () => void;
     dialogState: DialogState;
-    isEdit?: boolean;
 }
 
 export function AddOrEditMemberDialog({
     onStateChange,
     onSubmit,
     dialogState,
-    isEdit = false,
 }: MemberDialogProps) {
+    const isEdit = dialogState.action === 'edit';
     return (
         <Dialog
             open={dialogState.dialogOpen && (isEdit ? !!dialogState.memberId : !dialogState.memberId)}

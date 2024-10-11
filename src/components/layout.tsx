@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { CreditCard, LayoutDashboard, Settings, Users } from "lucide-react"
+import { CreditCard, LayoutDashboard, Users } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -91,17 +91,7 @@ export function LayoutComponent({children}: LayoutProps) {
         <div className="flex flex-1 flex-col overflow-hidden">
           <header className="flex h-16 items-center justify-between border-b px-4 md:px-6">
             <h1 className="text-2xl font-bold">Hello, {currentUser.name}</h1>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon">
-              <Users className="h-4 w-4" />
-              <span className="sr-only">Team</span>
-            </Button>
-            <Button variant="ghost" size="icon">
-              <Settings className="h-4 w-4" />
-              <span className="sr-only">Settings</span>
-            </Button>
-          </div>
-        </header>
+          </header>
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>

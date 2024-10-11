@@ -10,6 +10,7 @@ import { TeamPageOperations } from "@/components/copilot-context";
 import { useSearchParams } from "next/navigation";
 import { useCopilotAction} from "@copilotkit/react-core";
 import { AddOrEditMemberDialog, defaultDialogState, DialogState } from "@/components/add-or-edit-member-dialog";
+import { RemoveMemberConfirmationDialog } from "@/components/remove-member-dialog";
 
 export default function Team() {
     const { currentUser } = useAuthContext()
@@ -24,7 +25,7 @@ export default function Team() {
             {
                 name: 'id',
                 type: 'string',
-                description: 'The ID of the member to remove',
+                description: 'The ID of the member to remove (provided by copilot, ask questions to figure out the member)',
                 required: true,
             }
         ],
@@ -95,7 +96,7 @@ export default function Team() {
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">Team Management</h2>
-                <Button onClick={() => dispatchDialogState({ dialogOpen: true })}>
+                <Button onClick={() => dispatchDialogState({ dialogOpen: true, action: 'add' })}>
                     <UserPlus className="mr-2 h-4 w-4" /> Invite Team Member
                 </Button>
             </div>
@@ -116,15 +117,29 @@ export default function Team() {
                         </CardContent>
                         {currentUser.role === MemberRole.Admin ? (
                             <CardFooter className="flex justify-between">
-                                <Button variant="outline" onClick={() => dispatchDialogState({ memberId: member.id, dialogOpen: true })}>Edit</Button>
-                                <Button variant="destructive" onClick={() => removeMember(member.id)}>Remove</Button>
+                                <Button variant="outline" onClick={() => dispatchDialogState({ memberId: member.id, dialogOpen: true, action: 'edit' })}>Edit</Button>
+                                <Button variant="destructive" onClick={() => dispatchDialogState({ memberId: member.id, dialogOpen: true, action: 'remove' })}>Remove</Button>
                             </CardFooter>
                         ) : null}
                     </Card>
                 ))}
             </div>
-            <AddOrEditMemberDialog dialogState={dialogState} onStateChange={dispatchDialogState} onSubmit={handleAddMemberSubmit} />
-            <AddOrEditMemberDialog dialogState={dialogState} onStateChange={dispatchDialogState} onSubmit={handleAddMemberSubmit} isEdit />
+            <AddOrEditMemberDialog
+                dialogState={dialogState}
+                onStateChange={dispatchDialogState}
+                onSubmit={handleAddMemberSubmit}
+            />
+            {dialogState.action === 'remove' && (
+                <RemoveMemberConfirmationDialog
+                    dialogState={dialogState}
+                    onStateChange={dispatchDialogState}
+                    onSubmit={async () => {
+                        await removeMember(dialogState.memberId!);
+                        dispatchDialogState(defaultDialogState)
+                    }}
+                    members={team}
+                />
+            )}
         </div>
     )
 }
