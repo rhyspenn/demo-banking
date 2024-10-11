@@ -61,3 +61,5 @@ The SQL query generator at `/sql` leverages co-pilot chat with Generative UI to 
 
 The `/api/v1` path serves as the primary endpoint for API requests, handling various routes that interact with the application's data. Notably, the `data.ts` file contains hardcoded data that is utilized throughout the application.
 
+
+  
