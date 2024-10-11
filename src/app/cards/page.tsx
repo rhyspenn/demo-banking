@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useReducer } from "react"
-import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core"
+import { useCopilotAction } from "@copilotkit/react-core"
 import { CARD_COLORS, NewCardRequest, Transaction } from "@/app/api/v1/data"
-import { CreditCardDetails } from "@/components/CreditCardDetails";
+import { CreditCardDetails } from "@/components/credit-card-details";
 import { PartialBy } from "@/lib/type-helpers";
 import {
   filterTransactionByTitle,
@@ -12,12 +12,12 @@ import {
   randomDigits
 } from "@/lib/utils";
 import useCreditCards from "@/app/cards/actions";
-import { useAuthContext } from "@/components/AuthContext";
-import { AddCardDropdown } from "@/components/AddCardDropdown";
-import { TransactionsList } from "@/components/TransactionsList";
-import { ChangePinDialog} from "@/components/ChangePinDialog";
+import { useAuthContext } from "@/components/auth-context";
+import { AddCardDropdown } from "@/components/add-card-dropdown";
+import { TransactionsList } from "@/components/transactions-list";
+import { ChangePinDialog} from "@/components/change-pin-dialog";
 import { useSearchParams } from "next/navigation";
-import { CardsPageOperations } from "@/components/CopilotContext";
+import { CardsPageOperations } from "@/components/copilot-context";
 import { useCopilotChatSuggestions } from "@copilotkit/react-ui";
 
 interface ChangePinState { newPin: string, dialogOpen: boolean; cardId: string | null; loading: boolean }
@@ -41,11 +41,11 @@ export default function Page() {
     changeTransactionStatus
   } = useCreditCards()
 
-  const operationNameToMethod: Partial<Record<CardsPageOperations, () => void>> = {
-    [CardsPageOperations.ChangePin]: () => dispatch({ dialogOpen: true }),
-  }
-
   useEffect(() => {
+    const operationNameToMethod: Partial<Record<CardsPageOperations, () => void>> = {
+      [CardsPageOperations.ChangePin]: () => dispatch({ dialogOpen: true }),
+    }
+
     if (!operation || !Object.values(CardsPageOperations).includes(operation)) return;
     operationNameToMethod[operation]?.()
   }, [operation]);
@@ -59,12 +59,6 @@ export default function Page() {
   const handleAddCard = async (cardRequest: PartialBy<NewCardRequest, 'color' | 'pin'>) => {
     void addNewCard({ ...cardRequest, color: CARD_COLORS[cardRequest.type], pin: randomDigits(4).toString() })
   }
-
-  // Provide the cards data to our copilot
-  useCopilotReadable({
-    description: 'The available credit cards, possible expense policies and transactions',
-    value: {cards, policies, transactions},
-  });
 
   // Enable add new card with co pilot
   useCopilotAction({

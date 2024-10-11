@@ -5,8 +5,8 @@ import "./globals.css";
 import { CopilotKit } from "@copilotkit/react-core";
 import "@copilotkit/react-ui/styles.css";
 import { CopilotPopup } from "@copilotkit/react-ui";
-import CopilotContext from "@/components/CopilotContext";
-import { AuthContextProvider } from "@/components/AuthContext";
+import CopilotContext from "@/components/copilot-context";
+import { AuthContextProvider } from "@/components/auth-context";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",

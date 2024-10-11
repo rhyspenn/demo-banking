@@ -1,8 +1,8 @@
-import {NextRequest} from "next/server";
+import { NextRequest } from "next/server";
 import { data } from "../data";
 
 // Get policy per card
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
     return new Response(JSON.stringify(data.policies), { status: 200 });
 };
 

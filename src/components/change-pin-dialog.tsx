@@ -36,7 +36,7 @@ export function ChangePinDialog({
                 <DialogHeader>
                     <DialogTitle>Change PIN</DialogTitle>
                     <DialogDescription>
-                        Enter your new 4-digit PIN below. Make sure it's something you can remember but hard for others to
+                        Enter your new 4-digit PIN below. Make sure it&#39;s something you can remember but hard for others to
                         guess.
                     </DialogDescription>
                 </DialogHeader>

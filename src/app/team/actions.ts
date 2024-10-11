@@ -1,6 +1,6 @@
 import { ExpenseRole, Member, MemberRole } from "@/app/api/v1/data";
 import { useEffect, useState } from "react";
-import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
+import { useCopilotReadable } from "@copilotkit/react-core";
 
 export default function useTeam() {
     const [team, setTeam] = useState<Member[]>([]);
@@ -92,64 +92,12 @@ export default function useTeam() {
         void fetchUsers();
     }, []);
 
+    // This readable is set up here because the `useTeam` hook is also used in app wide context.
+    // So the available team members are known anywhere you are in the app.
     useCopilotReadable({
         description: 'The available users of the system.',
         value: team,
     });
-
-    useCopilotAction({
-        name: 'removeMember',
-        description: "Remove a team member",
-        parameters: [
-            {
-                name: 'id',
-                type: 'string',
-                description: 'The ID of the member to remove',
-                required: true,
-            }
-        ],
-        handler: ({ id }) => removeMember(id)
-    })
-
-    useCopilotAction({
-        name: 'changeMemberRole',
-        description: "Change the role of a team member",
-        parameters: [
-            {
-                name: 'id',
-                type: 'string',
-                description: 'The ID of the member to change the role of',
-                required: true,
-            },
-            {
-                name: 'role',
-                type: 'string',
-                description: 'The new role of the member',
-                required: true,
-            }
-        ],
-        handler: ({ id, role }) => changeMemberRole(id, role as MemberRole)
-    })
-
-    useCopilotAction({
-        name: 'changeMemberTeam',
-        description: "Change the team of a team member",
-        parameters: [
-            {
-                name: 'id',
-                type: 'string',
-                description: 'The ID of the member to change the team of',
-                required: true,
-            },
-            {
-                name: 'team',
-                type: 'string',
-                description: 'The new team of the member',
-                required: true,
-            }
-        ],
-        handler: ({ id, team }) => changeMemberTeam(id, team as ExpenseRole)
-    })
 
     return {
         team,

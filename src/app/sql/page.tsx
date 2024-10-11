@@ -48,12 +48,11 @@ const databaseStructure = {
 // In a real world application, there would be context boundaries and the copilot used here will have far less context.
 export default function Page() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-    const [result, setResult] = useState<any>(null);
 
     const handleExecuteQuery = (query: string) => {
         // This is where you would typically send the query to your backend
-        // For now, we'll just set a placeholder result
-        setResult(`Executed query: ${query}\n\nResult: [Placeholder for query result]`)
+        // For now, we'll just console it
+        console.info('Execute query', query)
     }
 
     useCopilotReadable({

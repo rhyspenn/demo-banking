@@ -62,5 +62,4 @@ export function AddCardDropdown({ currentUser, handleAddCard }: AddCardDropdownP
             </Tooltip>
         </TooltipProvider>
     );
-
 }

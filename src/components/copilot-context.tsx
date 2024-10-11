@@ -1,6 +1,6 @@
 'use client'
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
-import { useAuthContext } from "@/components/AuthContext";
+import { useAuthContext } from "@/components/auth-context";
 import { useRouter } from 'next/navigation';
 
 export enum Page {
@@ -30,6 +30,9 @@ const CopilotContext = ({ children }: { children: React.ReactNode }) => {
     const { currentUser } = useAuthContext()
     const router = useRouter();
 
+    // A readable of app wide authentication and authorization context.
+    // The LLM will now know which user is it working against, when performing operations.
+    // Given the respective authorization role, the LLM will allow/deny actions/information throughout the entire app.
     useCopilotReadable({
         description: 'The current user logged into the system',
         value: currentUser,
@@ -43,10 +46,16 @@ const CopilotContext = ({ children }: { children: React.ReactNode }) => {
         }
     })
 
+    // This action is a generic "fits all" action
+    // It's meant to allow the LLM to navigate to a page where an operation is available or probably available, and possibly activate the operation there.
+    // It is tired to the readable above, and requires that operations are implemented in their respective pages.
+    // The LLM here will redirect the user to a different page, and set an `operation` query param to notify the page of the requested action
+    // For example, you can find `change-pin` in the cards page, which is activated when `operation=change-pin` query param is sent
     useCopilotAction({
         name: 'navigateToPageAndPerform',
         description: `
-            Navigate to a page to perform an operation.
+            Navigate to a page to perform an operation. Use this if you are asked to perform an action outside of page context. For example:
+            The user is viewing a dashboard but asks to make changes to a team member or a credit card.
             
             If the operation name you resolved contains "*UNAVAILABLE*". Tell the user to navigate themselves to the page.
             Let them know which page that is.

@@ -9,7 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/com
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Popover, PopoverContent, PopoverTrigger, } from "@/components/ui/popover"
 import { Member, MemberRole } from "@/app/api/v1/data";
-import { useAuthContext } from "@/components/AuthContext";
+import { useAuthContext } from "@/components/auth-context";
 
 interface LayoutProps {
   children: React.ReactNode
@@ -83,7 +83,6 @@ export function LayoutComponent({children}: LayoutProps) {
             {currentUser.role === MemberRole.Admin ? (
                 <>
                   <NavItem href="/team" icon={Users} label="Team Management"/>
-                  <NavItem href="/settings" icon={Settings} label="Settings"/>
                 </>
             ) : null}
           </nav>

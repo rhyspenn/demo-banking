@@ -1,7 +1,9 @@
+'use client'
 import { NewCardRequest, Card as ICard, ExpensePolicy, MemberRole, Transaction } from "@/app/api/v1/data";
 import { randomDigits } from "@/lib/utils";
 import { useEffect, useState } from "react";
-import { useAuthContext } from "@/components/AuthContext";
+import { useAuthContext } from "@/components/auth-context";
+import {useCopilotReadable} from "@copilotkit/react-core";
 
 export default function useCreditCards() {
     const [cards, setCards] = useState<ICard[]>([]);
@@ -160,7 +162,14 @@ export default function useCreditCards() {
             console.error('Error changing transaction status:', error);
         }
     };
-    
+
+    // Provide the cards data to our copilot
+    // This readable is set up here because the `useCards` hook is also used in the dashboard
+    // So the cards information is available in both cards and dashboard pages.
+    useCopilotReadable({
+        description: 'The available credit cards, possible expense policies and transactions',
+        value: {cards, policies, transactions},
+    });
 
     return {
         cards: currentUser.role === MemberRole.Admin ? cards : cards.filter(card => {
