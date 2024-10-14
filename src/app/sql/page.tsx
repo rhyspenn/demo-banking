@@ -2,12 +2,12 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronRight, ChevronLeft, Database } from 'lucide-react'
+import { ChevronRight, ChevronLeft } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
 import { CopilotChat } from "@copilotkit/react-ui";
 import { CodeSnippet } from "@/components/code-snippet";
+import {SqlTable} from "@/components/sql-table";
 
 const databaseStructure = {
     Card: [
@@ -42,6 +42,21 @@ const databaseStructure = {
         { name: 'cardId', type: 'string' },
     ],
 }
+
+// The instructions here mocks a situation where the co-pilot LLM will be under completely different context than the rest of the app.
+// In our actual case for this demo, the co-pilot is able to retrieve quite a lot of information, and will prefer it over writing an SQL query when asking things like "Show me all team members"
+// Therefore, we have to "erase all data" and write a prompt that will consider this case
+const SQL_AGENT_INSTRUCTIONS = `
+                            *FORGET ALL DATA YOU HAVE*
+                            
+                            You are an SQL assistant. You are given a database and a question.
+                            You need to provide a SQL query that answers the question. You can use the table structure to help you.
+                            The table structure is as follows:
+                            ${JSON.stringify(databaseStructure)}.
+                            Return the entire query in one go (including all joints etc if require)
+                            
+                            You can only help the user by providing SQL queries or answers on SQL queries. You are not allowed to provide any data if you have it.
+                        `
 
 // Due to how this demo app is structured, we actually arrive at this page when CopilotKit has quite some information
 // If we do not cap its knowledge with prompts, it is able to answers the questions without providing SQL queries.
@@ -89,16 +104,7 @@ export default function Page() {
                     <h1 className="text-2xl font-bold mb-4">SQL Query</h1>
                     <h4 className="text-2xl font-bold mb-4">Ask a question, receive a query</h4>
                     <CopilotChat
-                        instructions={`
-                            *FORGET ALL DATA YOU HAVE*
-                            
-                            You are an SQL assistant. You are given a database and a question. You need to provide a SQL query that answers the question. You can use the table structure to help you.
-                            The table structure is as follows:
-                            ${JSON.stringify(databaseStructure)}.
-                            Return the entire query in one go (including all joints etc if require)
-                            
-                            You can only help the user by providing SQL queries or answers on SQL queries. You are not allowed to provide any data if you have it.
-                        `}
+                        instructions={SQL_AGENT_INSTRUCTIONS}
                         labels={{
                             title: "SQL Assistant",
                             initial: "Ask me anything and I will assist by providing a query",
@@ -121,41 +127,9 @@ export default function Page() {
                     </Button>
                 </div>
                 <ScrollArea className="h-[calc(100vh-64px)] p-4">
-                    <TableStructure />
+                    <SqlTable databaseStructure={databaseStructure} />
                 </ScrollArea>
             </div>
         </div>
-    )
-}
-
-function TableStructure() {
-    return (
-        <div className="space-y-6">
-            {Object.entries(databaseStructure).map(([tableName, fields]) => (
-                <TableCard key={tableName} name={tableName} fields={fields} />
-            ))}
-        </div>
-    )
-}
-
-function TableCard({ name, fields }: { name: string, fields: { name: string, type: string }[] }) {
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex items-center">
-                    <Database className="mr-2 h-4 w-4" />
-                    {name}
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <ul className="space-y-1">
-                    {fields.map((field, index) => (
-                        <li key={index} className="text-sm">
-                            <span className="font-medium">{field.name}</span>: <span className="text-muted-foreground">{field.type}</span>
-                        </li>
-                    ))}
-                </ul>
-            </CardContent>
-        </Card>
     )
 }
