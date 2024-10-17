@@ -339,10 +339,10 @@ export default function Page() {
     ),
   });
 
-  useCopilotReadable({
-    description: "The user has access to the following documents",
-    value: PERMISSIONS.READ_MSA.includes(currentUser.role) ? [FEDEX_MSA] : [],
-  });
+  // useCopilotReadable({
+  //   description: "The user has access to the following documents",
+  //   value: PERMISSIONS.READ_MSA.includes(currentUser.role) ? [FEDEX_MSA] : [],
+  // });
 
   useCopilotChatSuggestions({
     instructions: `

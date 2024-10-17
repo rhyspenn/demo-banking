@@ -34,7 +34,7 @@ function UserNavigation({
   onChangeUser: (user: Member) => void;
 }) {
   const getInitials = (name: string) => {
-    return name
+    return (name || "X Y")
       .split(" ")
       .map((n) => n[0])
       .join("")
