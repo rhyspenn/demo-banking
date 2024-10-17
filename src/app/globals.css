@@ -17,3 +17,7 @@ body {
     --radius: 0.5rem;
   }
 }
+
+.prefix-arrow::before {
+  content: "↑ ";
+}
