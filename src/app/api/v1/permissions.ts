@@ -1,7 +1,7 @@
 import { MemberRole } from "@/app/api/v1/data";
 
 export const PERMISSIONS = {
-  ADD_CARD: [MemberRole.Admin, MemberRole.Assistant],
+  ADD_CARD: [MemberRole.Admin],
   ADD_POLICY: [MemberRole.Admin, MemberRole.Assistant],
   ADD_NOTE: [MemberRole.Admin, MemberRole.Assistant, MemberRole.Member],
   SHOW_TRANSACTIONS: [
