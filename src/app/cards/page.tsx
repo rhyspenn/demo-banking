@@ -249,14 +249,10 @@ export default function Page() {
         description: "The id of the card (provided by copilot)",
         required: true,
       },
-      {
-        name: "pin",
-        type: "string",
-        description: "The 4 digits (numbers) pin code to set",
-        required: true,
-      },
     ],
-    handler: changePin,
+    handler: async ({ cardId }) => {
+      dispatch({ dialogOpen: true, cardId });
+    },
   });
 
   useCopilotAction({
