@@ -26,6 +26,7 @@ import { CardsPageOperations } from "@/components/copilot-context";
 import { useCopilotChatSuggestions } from "@copilotkit/react-ui";
 import { PERMISSIONS } from "../api/v1/permissions";
 import { FEDEX_MSA } from "@/lib/fake-msa";
+import { Button } from "@/components/ui/button";
 
 interface ChangePinState {
   newPin: string;
