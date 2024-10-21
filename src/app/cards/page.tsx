@@ -4,7 +4,6 @@ import { useEffect, useReducer } from "react";
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
 import {
   CARD_COLORS,
-  MemberRole,
   NewCardRequest,
   Transaction,
 } from "@/app/api/v1/data";
@@ -25,8 +24,6 @@ import { useSearchParams } from "next/navigation";
 import { CardsPageOperations } from "@/components/copilot-context";
 import { useCopilotChatSuggestions } from "@copilotkit/react-ui";
 import { PERMISSIONS } from "../api/v1/permissions";
-import { FEDEX_MSA } from "@/lib/fake-msa";
-import { Button } from "@/components/ui/button";
 
 interface ChangePinState {
   newPin: string;

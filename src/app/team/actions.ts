@@ -1,6 +1,5 @@
 import { ExpenseRole, Member, MemberRole } from "@/app/api/v1/data";
 import { useEffect, useState } from "react";
-import { useCopilotReadable } from "@copilotkit/react-core";
 
 export default function useTeam() {
   const [team, setTeam] = useState<Member[]>([]);

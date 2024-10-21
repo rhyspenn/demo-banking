@@ -1,7 +1,6 @@
 "use client";
 import { useCopilotAction, useCopilotReadable } from "@copilotkit/react-core";
 import { useAuthContext } from "@/components/auth-context";
-import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 
 export enum Page {
@@ -27,7 +26,6 @@ export const AVAILABLE_OPERATIONS_PER_PAGE = {
 // A component dedicated to adding readables/actions that are global to the app.
 const CopilotContext = ({ children }: { children: React.ReactNode }) => {
   const { currentUser } = useAuthContext();
-  const router = useRouter();
 
   // A readable of app wide authentication and authorization context.
   // The LLM will now know which user is it working against, when performing operations.
@@ -91,7 +89,7 @@ const CopilotContext = ({ children }: { children: React.ReactNode }) => {
       },
     ],
     followUp: false,
-    renderAndWait: ({ args, handler, status }) => {
+    renderAndWait: ({ args, handler }) => {
       const { page, operation, operationAvailable } = args;
 
       return (
