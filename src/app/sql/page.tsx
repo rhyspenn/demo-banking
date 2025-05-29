@@ -104,6 +104,7 @@ export default function Page() {
                     <h1 className="text-2xl font-bold mb-4">SQL Query</h1>
                     <h4 className="text-2xl font-bold mb-4">Ask a question, receive a query</h4>
                     <CopilotChat
+                        className='h-[calc(100vh-200px)]'
                         instructions={SQL_AGENT_INSTRUCTIONS}
                         labels={{
                             title: "SQL Assistant",
