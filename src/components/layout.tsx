@@ -20,6 +20,9 @@ import {
 import { Member, MemberRole } from "@/app/api/v1/data";
 import { useAuthContext } from "@/components/auth-context";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useCopilotChat, useCopilotReadable } from "@copilotkit/react-core";
+import { usePathname } from "next/navigation";
+import { useCopilotChatSuggestions } from "@copilotkit/react-ui";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -94,6 +97,34 @@ function UserNavigation({
 
 export function LayoutComponent({ children }: LayoutProps) {
   const { users, currentUser, setCurrentUser } = useAuthContext();
+  const pathname = usePathname();
+  console.log("pathname", pathname.split("/")[1]);
+  useCopilotReadable({
+    description: "The current page where the user is",
+    value: pathname.split("/")[1] == "" ? "cards" : pathname.split("/")[1],
+  });
+  useCopilotChatSuggestions({
+    instructions: `
+      You have access to where the user is in the app from copilotkit readables.
+        -if the user is on the cards page,
+          suggest actions/information in this page related to credit cards, transactions or policies.
+          Use specific items or "all items", for example:
+          "Show all transactions of Marketing department" or "Tell me how much I spent on my Mastercard"
+          If the user has permission to e.g. add credit card, then you can suggest to add a new card.
+          Do the same for other actions.
+        -if the user is on the dashboard page,
+          suggest prompts like "describe current view" so that you can provide a summary of the current view.
+          you can also suggest prompts like "show me the recent transactions", "list all policies" or "show me the team".
+    `,
+    minSuggestions: 3,
+    maxSuggestions: 3,
+    // className:
+    //   currentUser.role === MemberRole.Admin
+    //     ? "bg-purple-500 prefix-arrow text-xs p-1 rounded-sm text-white"
+    //     : undefined,
+  });
+
+  const { setMessages, reloadMessages } = useCopilotChat();
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -102,8 +133,8 @@ export function LayoutComponent({ children }: LayoutProps) {
           <LayoutDashboard className="h-8 w-8 text-white" />
         </Link>
         <nav className="flex flex-1 flex-col items-center space-y-6">
-          <NavItem href="/" icon={LayoutDashboard} label="Dashboard" />
-          <NavItem href="/cards" icon={CreditCard} label="Credit Cards" />
+          <NavItem href="/dashboard" icon={LayoutDashboard} label="Dashboard" />
+          <NavItem href="/" icon={CreditCard} label="Credit Cards" />
           {currentUser.role === MemberRole.Admin ? (
             <>
               <NavItem href="/team" icon={Users} label="Team Management" />

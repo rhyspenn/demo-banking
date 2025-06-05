@@ -94,7 +94,7 @@ export default function HomePage() {
                             <p className="text-sm text-neutral-500 dark:text-neutral-400">Expires {card.expiry}</p>
                           </div>
                           <Button variant="outline" asChild>
-                            <a href="/cards">Manage</a>
+                            <a href="/">Manage</a>
                           </Button>
                         </div>
                     ))}

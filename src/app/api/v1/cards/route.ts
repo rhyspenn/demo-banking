@@ -10,7 +10,7 @@ export const POST = async (req: NextRequest) => {
         // Handle new card creation
         const body = await req.json();
         const { last4, expiry, type, color, pin } = body;
-        const newCard: Card = { id: generateUniqueId(), last4, expiry, type, color, pin }; // Ensure all required fields are included
+        const newCard: Card = { id: generateUniqueId(), last4, expiry, type, color, pin, expensePolicyId: "8r5c3m4n5o" }; // Ensure all required fields are included
         // Assuming there's a function to add a new card to the data
         data.cards.push(newCard);
         return new Response(JSON.stringify(newCard), { status: 201 });
